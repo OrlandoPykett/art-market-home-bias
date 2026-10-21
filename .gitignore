@@ -3,3 +3,6 @@
 
 # Ignore all dta data files
 /data/*.dta
+
+# Ignore all results
+/results/*.csv

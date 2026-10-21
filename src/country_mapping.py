@@ -2,7 +2,7 @@
 # Numeric codes to country
 # ------
 
-COUNTRY_CODE_MAPPING = {
+COUNTRY_CODE_MAP = {
     1: "United States",    # Unverified
     2: "United Kingdom",    # Unverified
     3: "China",    # Unverified
@@ -41,7 +41,7 @@ COUNTRY_CODE_MAPPING = {
 # City to country
 # ------
 
-CITY_COUNTRY_MAPPING = {
+CITY_COUNTRY_MAP = {
 
     """
     Notes
@@ -298,7 +298,7 @@ CITY_COUNTRY_MAPPING = {
 # Nationality to country
 # ------
 
-NATIONALITY_COUNTRY_MAPPING = {
+NATIONALITY_COUNTRY_MAP = {
     "American": "United States",
     "German": "Germany",
     "British": "United Kingdom",
@@ -403,7 +403,7 @@ COUNTRIES = {
     "Yugoslavia",
 }
 
-ARTIST_NATIONALITY_MAPPING = {
+ARTIST_NATIONALITY_MAP = {
     "BONNARDPIERRE": "France",
     "BOUDINEUGENE": "France",
     "BRAUNERVICTOR": "Romania",
@@ -465,9 +465,21 @@ ARTIST_NATIONALITY_MAPPING = {
     "VUILLARDEDOUAR": "France",
 }
 
-country_abbreviation_map = {
+COUNTRY_ABBREVIATION_MAP = {
     "LO": "United Kingdom",
     "NY": "United States",
+}
+
+CEPII_COUNTRY_MAP = {
+    "United States of America": "United States",
+    "United Kingdom of Great Britain and Northern Ireland": "United Kingdom",
+    "Belgium and Luxembourg": "Belgium",
+    "Russian Federation": "Russia",
+    "Iran (Islamic Republic of)": "Iran",
+    "Venezuela (Bolivarian Republic of)": "Venezuela",
+    "China, Hong Kong Special Administrative Region": "Hong Kong",
+    "Republic of Korea": "South Korea"
+    
 }
 
 
@@ -495,8 +507,8 @@ def convert_country(value):
     try:
         code = int(float(value))
 
-        if code in COUNTRY_CODE_MAPPING:
-            return COUNTRY_CODE_MAPPING[code]
+        if code in COUNTRY_CODE_MAP:
+            return COUNTRY_CODE_MAP[code]
 
     except ValueError:
         pass
@@ -506,8 +518,7 @@ def convert_country(value):
         return value
 
     # City/location → country
-    return CITY_COUNTRY_MAPPING.get(value)
-
+    return CITY_COUNTRY_MAP.get(value)
 
 def map_sale_country(df):
     """

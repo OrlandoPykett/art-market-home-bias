@@ -3,9 +3,9 @@ import numpy as np
 
 from country_mapping import (
     convert_country,
-    NATIONALITY_COUNTRY_MAPPING,
-    ARTIST_NATIONALITY_MAPPING,
-    country_abbreviation_map
+    NATIONALITY_COUNTRY_MAP,
+    ARTIST_NATIONALITY_MAP,
+    COUNTRY_ABBREVIATION_MAP
 )
 
 # ------
@@ -14,11 +14,10 @@ from country_mapping import (
 
 # Input
 TRANSACTIONS_FILE = "data/raw/transactions.csv"
-IMPRESSIONIST_FILE = "data/impressionist_art.csv"
+IMPRESSIONIST_FILE = "data/raw/impressionist_art.csv"
 
 # Output
 OUTPUT_FILE = "data/transactions_merged.csv"
-
 
 # ------
 # Load data
@@ -26,9 +25,6 @@ OUTPUT_FILE = "data/transactions_merged.csv"
 
 old = pd.read_csv(TRANSACTIONS_FILE, encoding="latin1")
 impress = pd.read_csv(IMPRESSIONIST_FILE, encoding="latin1")
-
-
-import pandas as pd
 
 df = pd.read_csv("transactions_merged.csv")
 
@@ -66,7 +62,7 @@ old["artist_name"] = old["artist_name"].astype(str).str.strip()
 # Artist nationality -> artist country
 old["artist_country"] = (
     old["nationality"]
-    .map(NATIONALITY_COUNTRY_MAPPING)
+    .map(NATIONALITY_COUNTRY_MAP)
 )
 
 # Auction country -> sale country
@@ -104,7 +100,7 @@ impress["artist_name"] = (
 # Artist name -> artist country
 impress["artist_country"] = (
     impress["artist_name"]
-    .map(ARTIST_NATIONALITY_MAPPING)
+    .map(ARTIST_NATIONALITY_MAP)
 )
 
 # LO / NY -> country using existing mapping
@@ -112,7 +108,7 @@ impress["sale_country"] = (
     impress["AUCT_LOC"]
     .astype(str)
     .str.strip()
-    .map(country_abbreviation_map)
+    .map(COUNTRY_ABBREVIATION_MAP)
 )
 
 # Auction house
