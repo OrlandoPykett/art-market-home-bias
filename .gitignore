@@ -1,0 +1,5 @@
+# Ignore all CSV data files
+/data/*.csv
+
+# Ignore all dta data files
+/data/*.dta
