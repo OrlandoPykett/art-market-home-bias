@@ -1,8 +1,8 @@
 # Ignore all CSV data files
-/data/*.csv
+/data/**/.csv
 
 # Ignore all dta data files
-/data/*.dta
+/data/**/.dta
 
 # Ignore all results
 /results/*.csv
