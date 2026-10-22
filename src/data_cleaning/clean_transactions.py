@@ -2,10 +2,12 @@ import pandas as pd
 
 df1 = pd.read_csv("data/raw/transactions.csv",
                   encoding="latin1",
-                  low_memory=False)
+                  low_memory=False
+                  )
 df2 = pd.read_csv("data/raw/impressionist_art.csv",
                   encoding="latin1",
-                  low_memory=False)
+                  low_memory=False
+                  )
 
 df1.columns = df1.columns.str.strip()
 df2.columns = df2.columns.str.strip()
@@ -45,6 +47,7 @@ df2_keep_columns = [
     "AUCT_LOC",
     #"AUCT_DAT" # Auction date format: ddMONTHyy
     "ANAME", # Artist name format: SURNAMEFORENAME
+    "uscpi", # US Consumer Price Index
     "ydate", # Year
     #"newdate" # Date format: yyyy-mm-dd
 ]
@@ -58,6 +61,10 @@ df2 = df2[
     [col for col in df2_keep_columns if col in df2.columns]
 ].copy()
 
+
+# ------
+# Standardise fields
+# ------
 
 # Standardise column names
 df1 = df1.rename(columns={
@@ -92,6 +99,7 @@ df2 = df2.rename(columns={
         "HOUSE": "auction_house",
         "AUCT_LOC": "auction_location",
         "ANAME": "artist_name", 
+        "uscpi": "uscpi",
         "ydate": "sale_y", 
 })
 
@@ -108,8 +116,6 @@ for col in [
     if col in df2.columns:
         df2[col] = df2[col].astype("string").str.strip()
 
-
-# Standardise name format
 # Convert from df1 to format SURNAMEFORENAME
 def format_artist(name):
 
@@ -141,6 +147,27 @@ def format_artist(name):
 df1["artist_name"] = df1["artist_name"].apply(format_artist)
 
 
+# ------
+# Convert to real usd in df2
+# ------
+
+# Convert df2 sales price to dollars
+df2["price"] = pd.to_numeric(df2["price"], errors="coerce")
+df2["CNV_RATE"] = pd.to_numeric(df2["CNV_RATE"], errors="coerce")
+
+df2["price_usd"] = df2["price"] / df2["CNV_RATE"]
+
+# Convert to real usd
+df2["uscpi"] = pd.to_numeric(df2["uscpi"], errors="coerce")
+df2["sale_y"] = pd.to_numeric(df2["sale_y"], errors="coerce")
+
+base_cpi = df2.loc[df2["sale_y"] == 2000, "uscpi"].median()
+
+df2["real_price_usd"] = df2["price_usd"] * base_cpi / df2["uscpi"]
+
+
+# ------
 # Save cleaned datasets
+# ------
 df1.to_csv("data/cleaned/dataset1_cleaned.csv", index=False)
 df2.to_csv("data/cleaned/dataset2_cleaned.csv", index=False)
