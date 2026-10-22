@@ -4,60 +4,34 @@ import statsmodels.formula.api as smf
 from statsmodels.regression.linear_model import OLS
 from statsmodels.tools import add_constant
 from pathlib import Path
+import datetime
 
 
-# ============================================================
-# 1. SETTINGS
-# ============================================================
+df = pd.read_csv("data/cleaned/transactions_merged.csv", encoding="latin1", low_memory=False)
 
-DATA_FILE = "transactions.csv"
-
-OUTPUT_CLEAN = "home_bias_cleaned.csv"
-OUTPUT_RESULTS = "home_bias_results.txt"
+OUTPUT_CLEAN = "results/home_bias_cleaned.csv"
+OUTPUT_RESULTS = "results/home_bias_results.txt"
 
 # Minimum number of observations an artist needs to be retained.
-# Set to 1 to follow the paper more closely.
+# Vosilov uses 1
 MIN_ARTIST_OBS = 1
 
+timeNow = datetime.datetime.now()
 
-# ============================================================
-# 2. LOAD DATA
-# ============================================================
-
-print("=" * 70)
-print("ART AUCTION HOME-BIAS ANALYSIS")
-print("=" * 70)
-
-print("\nLoading data...")
-
-df = pd.read_csv(DATA_FILE, encoding="latin1", low_memory=False)
-
-print(f"Loaded {len(df):,} observations.")
+print("-" * 20)
+print(f"Programme started at: {timeNow}")
+print("-" * 20)
+print(f"\nLoaded {len(df):,} observations.")
 print(f"Number of columns: {len(df.columns)}")
 
 print("\nColumns:")
 for col in df.columns:
     print(f"  {col}")
 
-
-# ============================================================
-# 3. CHECK REQUIRED COLUMNS
-# ============================================================
+# Check that dataset has the required columns
 
 required_columns = [
-    "artist_name",
-    "nationality",
-    "auction_house",
-    "country",
-    "price_usd",
-    "real_price_usd",
-    "ln_real_price",
-    "event_year",
-    "materials",
-    "height",
-    "width",
-    "depth",
-    "Year of Birth",
+
 ]
 
 missing_columns = [
@@ -72,20 +46,21 @@ if missing_columns:
     )
 
 
-# ============================================================
-# 4. BASIC CLEANING
-# ============================================================
-
-# Strip whitespace from string variables
 string_columns = [
     "artist_name",
-    "nationality",
+    "artist_country",
+    "sale_country",
     "auction_house",
-    "country",
+    "event_year",
     "materials",
-    "genre",
-    "event name",
-    "currency",
+    "height",
+    "width",
+    "depth",
+    "size",
+    "log_size",
+    "real_price_usd",
+    "ln_real_price",
+    "data_source",
 ]
 
 for col in string_columns:
@@ -95,7 +70,6 @@ for col in string_columns:
 
 # Convert numeric variables
 numeric_columns = [
-    "price_usd",
     "real_price_usd",
     "ln_real_price",
     "event_year",
@@ -113,9 +87,9 @@ for col in numeric_columns:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
 
-# ============================================================
-# 5. CONSTRUCT LOG REAL PRICE
-# ============================================================
+# ------
+# Construct log real price
+# ------
 
 # Prefer the dataset's real_price_usd.
 # If it is missing, fall back to price_usd.
@@ -127,7 +101,7 @@ df.loc[
     "analysis_price"
 ] = df.loc[
     df["analysis_price"].isna(),
-    "price_usd"
+    "real_price_usd"
 ]
 
 # Remove zero/negative prices
@@ -136,25 +110,17 @@ df.loc[df["analysis_price"] <= 0, "analysis_price"] = np.nan
 df["log_price"] = np.log(df["analysis_price"])
 
 
-# ============================================================
-# 6. CONSTRUCT ARTWORK SIZE
-# ============================================================
+# ------
+# Construct artwork size
+# ------
 
-# Vosilov uses sculpture size as a control.
-#
-# Your dataset has height, width and depth.
-#
-# We construct:
-#
-#     volume = height × width × depth
-#
-# when depth exists.
-#
-# Otherwise:
-#
-#     area = height × width
-#
-# and use the available measure.
+'''
+When depth exists:
+    volume = height × width × depth
+
+Otherwise:
+    area = height × width
+'''
 
 df["artwork_area"] = (
     df["height"] * df["width"]
@@ -184,381 +150,37 @@ df.loc[df["size_measure"] <= 0, "size_measure"] = np.nan
 df["log_size"] = np.log(df["size_measure"])
 
 
-# ============================================================
-# 7. ARTIST AGE / LIFE STATUS
-# ============================================================
-
-# Year of birth is available in your dataset.
-#
-# We use event_year - birth_year to construct age.
-#
-# The original Vosilov study controls for whether the artist
-# was deceased at the time of sale.
-#
-# We need year of death for an exact replication, but your
-# dataset does not appear to contain it.
-#
-# Therefore we use "alive_id" if it contains useful information.
-#
-# If alive_id is unavailable/useless, this variable is omitted.
-
-if "alive_id" in df.columns:
-
-    print("\nUnique alive_id values:")
-    print(df["alive_id"].value_counts(dropna=False).head(20))
-
-    # We deliberately do not assume what the coding means.
-    # The program will create an indicator only if it is clearly
-    # binary.
-
-    unique_alive = df["alive_id"].dropna().unique()
-
-    if len(unique_alive) <= 3:
-        print(
-            "\nalive_id appears to be a low-cardinality variable."
-        )
-        print(
-            "You should inspect the values above before interpreting it."
-        )
-
-
-# ============================================================
-# 8. AUCTION LOCATION → COUNTRY
-# ============================================================
-
-print("\n" + "=" * 70)
-print("AUCTION LOCATION")
-print("=" * 70)
-
-print("\nMost common values in the dataset's 'country' column:")
-
-print(
-    df["country"]
-    .value_counts(dropna=False)
-    .head(50)
-)
-
-
-# ------------------------------------------------------------
-# IMPORTANT
-# ------------------------------------------------------------
-#
-# Your example shows:
-#
-#     Sotheby | New York
-#
-# so "country" appears to contain an auction LOCATION,
-# not necessarily a country.
-#
-# We therefore map common auction cities to countries.
-#
-# Unknown locations are NOT silently classified.
-# They become NaN and are excluded from the home-bias regression.
-# ------------------------------------------------------------
-
-location_to_country = {
-
-    # United States
-    "New York": "United States",
-    "New York City": "United States",
-    "Los Angeles": "United States",
-    "Chicago": "United States",
-    "San Francisco": "United States",
-    "Boston": "United States",
-    "Miami": "United States",
-    "Dallas": "United States",
-    "Houston": "United States",
-    "Las Vegas": "United States",
-    "Washington": "United States",
-
-    # United Kingdom
-    "London": "United Kingdom",
-    "Edinburgh": "United Kingdom",
-    "Glasgow": "United Kingdom",
-    "Manchester": "United Kingdom",
-
-    # France
-    "Paris": "France",
-    "Lyon": "France",
-    "Nice": "France",
-    "Cannes": "France",
-    "Toulouse": "France",
-
-    # Germany
-    "Berlin": "Germany",
-    "Munich": "Germany",
-    "Cologne": "Germany",
-    "Frankfurt": "Germany",
-    "Hamburg": "Germany",
-    "Dusseldorf": "Germany",
-    "Düsseldorf": "Germany",
-
-    # Italy
-    "Milan": "Italy",
-    "Rome": "Italy",
-    "Florence": "Italy",
-    "Turin": "Italy",
-    "Venice": "Italy",
-    "Naples": "Italy",
-
-    # Switzerland
-    "Geneva": "Switzerland",
-    "Zurich": "Switzerland",
-    "Basel": "Switzerland",
-    "Bern": "Switzerland",
-
-    # Austria
-    "Vienna": "Austria",
-    "Salzburg": "Austria",
-
-    # Netherlands
-    "Amsterdam": "Netherlands",
-    "Rotterdam": "Netherlands",
-
-    # Belgium
-    "Brussels": "Belgium",
-    "Antwerp": "Belgium",
-
-    # Spain
-    "Madrid": "Spain",
-    "Barcelona": "Spain",
-    "Valencia": "Spain",
-    "Bilbao": "Spain",
-
-    # Portugal
-    "Lisbon": "Portugal",
-    "Porto": "Portugal",
-
-    # Denmark
-    "Copenhagen": "Denmark",
-
-    # Sweden
-    "Stockholm": "Sweden",
-    "Gothenburg": "Sweden",
-    "Malmö": "Sweden",
-    "Malmo": "Sweden",
-
-    # Norway
-    "Oslo": "Norway",
-
-    # Finland
-    "Helsinki": "Finland",
-
-    # Ireland
-    "Dublin": "Ireland",
-
-    # China
-    "Beijing": "China",
-    "Shanghai": "China",
-    "Guangzhou": "China",
-    "Shenzhen": "China",
-    "Hangzhou": "China",
-
-    # Hong Kong
-    "Hong Kong": "Hong Kong",
-
-    # Japan
-    "Tokyo": "Japan",
-    "Osaka": "Japan",
-    "Kyoto": "Japan",
-
-    # South Korea
-    "Seoul": "South Korea",
-
-    # Singapore
-    "Singapore": "Singapore",
-
-    # Australia
-    "Sydney": "Australia",
-    "Melbourne": "Australia",
-    "Brisbane": "Australia",
-
-    # Canada
-    "Toronto": "Canada",
-    "Montreal": "Canada",
-    "Vancouver": "Canada",
-
-    # Brazil
-    "Sao Paulo": "Brazil",
-    "São Paulo": "Brazil",
-    "Rio de Janeiro": "Brazil",
-
-    # Mexico
-    "Mexico City": "Mexico",
-
-    # Russia
-    "Moscow": "Russia",
-    "St Petersburg": "Russia",
-    "Saint Petersburg": "Russia",
-
-    # UAE
-    "Dubai": "United Arab Emirates",
-    "Abu Dhabi": "United Arab Emirates",
-
-    # Israel
-    "Tel Aviv": "Israel",
-
-    # India
-    "Mumbai": "India",
-    "New Delhi": "India",
-
-    # South Africa
-    "Johannesburg": "South Africa",
-    "Cape Town": "South Africa",
-}
-
-
-def normalize_location(value):
-
-    if pd.isna(value):
-        return np.nan
-
-    value = str(value).strip()
-
-    if value in location_to_country:
-        return location_to_country[value]
-
-    # Sometimes a location might contain additional text.
-    value_lower = value.lower()
-
-    for city, country in location_to_country.items():
-
-        if city.lower() in value_lower:
-            return country
-
-    return np.nan
-
-
-df["auction_country"] = df["country"].apply(
-    normalize_location
-)
-
-
-# ============================================================
-# 9. NORMALIZE ARTIST NATIONALITY
-# ============================================================
-
-print("\n" + "=" * 70)
-print("ARTIST NATIONALITY")
-print("=" * 70)
-
-print(
-    "\nMost common nationality values:"
-)
-
-print(
-    df["nationality"]
-    .value_counts(dropna=False)
-    .head(50)
-)
-
-
-# Map nationality labels to standardized countries.
-
-nationality_map = {
-
-    "American": "United States",
-    "USA": "United States",
-    "US": "United States",
-
-    "British": "United Kingdom",
-    "English": "United Kingdom",
-    "Scottish": "United Kingdom",
-    "Welsh": "United Kingdom",
-
-    "French": "France",
-
-    "German": "Germany",
-
-    "Italian": "Italy",
-
-    "Spanish": "Spain",
-
-    "Swiss": "Switzerland",
-
-    "Austrian": "Austria",
-
-    "Dutch": "Netherlands",
-    "Netherlandish": "Netherlands",
-
-    "Belgian": "Belgium",
-
-    "Danish": "Denmark",
-
-    "Swedish": "Sweden",
-
-    "Norwegian": "Norway",
-
-    "Finnish": "Finland",
-
-    "Irish": "Ireland",
-
-    "Portuguese": "Portugal",
-
-    "Chinese": "China",
-
-    "Japanese": "Japan",
-
-    "Korean": "South Korea",
-    "South Korean": "South Korea",
-
-    "Canadian": "Canada",
-
-    "Australian": "Australia",
-
-    "Brazilian": "Brazil",
-
-    "Mexican": "Mexico",
-
-    "Indian": "India",
-
-    "Russian": "Russia",
-
-    "Israeli": "Israel",
-
-    "South African": "South Africa",
-
-    "Singaporean": "Singapore",
-}
-
-
-def normalize_nationality(value):
-
-    if pd.isna(value):
-        return np.nan
-
-    value = str(value).strip()
-
-    if value in nationality_map:
-        return nationality_map[value]
-
-    return value
-
-
-df["artist_country"] = df["nationality"].apply(
-    normalize_nationality
-)
-
-
-# ============================================================
-# 10. HOME BIAS VARIABLE
-# ============================================================
-
-# HomeBias = 1 if:
-#
-#     artist's nationality == auction country
-#
-# HomeBias = 0 if:
-#
-#     artist nationality != auction country
-#
-# We only assign the variable where BOTH countries are known.
+# ------
+# Artist age and alive dummy
+# ------
+
+'''
+Vosilov uses a dummy variable for the artist being alive
+The current dataset does not contain any suitable variable for alive/dead
+The absence of such a dummy makes the pricing model less accurate
+For this study the absence of such a variable should not be of too much importance
+Accurate price differences are more important than accurate prices
+'''
+
+# ------
+# Home bias variable
+# ------
+
+'''
+HomeBias = 1 if:
+    artist's nationality == auction country
+
+HomeBias = 0 if:
+    artist nationality != auction country
+
+Variables are only assigned where both countries are known.
+'''
 
 df["home_bias"] = np.nan
 
 valid_location = (
-    df["artist_country"].notna()
-    & df["auction_country"].notna()
+    df["sale_country"].notna()
+    & df["sale_country"].notna()
 )
 
 df.loc[
@@ -572,7 +194,7 @@ df.loc[
     ==
     df.loc[
         valid_location,
-        "auction_country"
+        "sale_country"
     ]
 ).astype(int)
 
@@ -598,38 +220,33 @@ if valid_location.sum() > 0:
     )
 
 
-# ============================================================
-# 11. SHOW UNMAPPED AUCTION LOCATIONS
-# ============================================================
-
-print("\n" + "=" * 70)
-print("UNMAPPED AUCTION LOCATIONS")
-print("=" * 70)
+# ------
+# Unmapped locations
+# ------
 
 unmapped = (
     df.loc[
-        df["auction_country"].isna()
-        & df["country"].notna(),
+        df["sale_country"].isna()
+        & df["artist_country"].notna(),
         "country"
     ]
     .value_counts()
 )
 
-print(
-    f"\nThere are {len(unmapped)} unique auction-location values "
-    "that could not be mapped."
-)
+if len(unmapped) > 0:
+    print("\n" + "-" * 20)
+    print(f"There are {len(unmapped)} location valus that could not be mapped")
 
-print(
-    "\nTop unmapped values:"
-)
+    print(
+        "\nTop unmapped values:"
+    )
+    print(unmapped.head(100))
+    print("-" * 20)
 
-print(unmapped.head(100))
 
-
-# ============================================================
-# 12. CREATE REGRESSION SAMPLE
-# ============================================================
+# ------
+# Create regression sample
+# ------
 
 analysis_vars = [
     "log_price",
@@ -670,9 +287,9 @@ if MIN_ARTIST_OBS > 1:
     ]
 
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("REGRESSION SAMPLE")
-print("=" * 70)
+print("-" * 20)
 
 print(
     f"\nFull dataset:       {len(df):,}"
@@ -699,13 +316,13 @@ print(
 )
 
 
-# ============================================================
-# 13. MAIN OLS REGRESSION
-# ============================================================
+# ------
+# OLS Regression
+# ------
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("OLS HOME-BIAS REGRESSION")
-print("=" * 70)
+print("-" * 20)
 
 #
 # The specification follows Vosilov's basic hedonic structure:
@@ -718,8 +335,7 @@ print("=" * 70)
 #     + medium controls
 #     + size
 #
-# Artist fixed effects are particularly useful here because
-# different artists have enormously different price levels.
+# 
 #
 
 formula = """
@@ -772,13 +388,13 @@ print(
 print("-" * 70)
 
 
-# ============================================================
-# 14. 10TH QUANTILE REGRESSION
-# ============================================================
+# ------
+# 10th quantile regression
+# ------
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("10TH QUANTILE REGRESSION")
-print("=" * 70)
+print("-" * 20)
 
 quantile_10 = smf.quantreg(
     formula,
@@ -793,13 +409,13 @@ print(
 )
 
 
-# ============================================================
-# 15. 90TH QUANTILE REGRESSION
-# ============================================================
+# ------
+# 90th quantile regression
+# ------
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("90TH QUANTILE REGRESSION")
-print("=" * 70)
+print("-" * 20)
 
 quantile_90 = smf.quantreg(
     formula,
@@ -814,9 +430,9 @@ print(
 )
 
 
-# ============================================================
-# 16. COMPARE QUANTILES
-# ============================================================
+# ------
+# Compare quantiles
+# ------
 
 q10_beta = quantile_10.params["home_bias"]
 q90_beta = quantile_90.params["home_bias"]
@@ -829,9 +445,9 @@ q90_effect = (
     np.exp(q90_beta) - 1
 ) * 100
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("QUANTILE COMPARISON")
-print("=" * 70)
+print("-" * 20)
 
 print(
     f"""
@@ -844,13 +460,13 @@ Implied price effect      {q10_effect:8.2f}%          {q90_effect:8.2f}%
 )
 
 
-# ============================================================
-# 17. DESCRIPTIVE STATISTICS
-# ============================================================
+# ------
+# Descriptive statistics
+# ------
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("DESCRIPTIVE STATISTICS")
-print("=" * 70)
+print("-" * 20)
 
 print(
     analysis_df[
@@ -865,13 +481,13 @@ print(
 )
 
 
-# ============================================================
-# 18. HOME VS FOREIGN MEAN PRICES
-# ============================================================
+# ------
+# Home vs Foreign mean prices
+# ------
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("HOME VS FOREIGN SALES")
-print("=" * 70)
+print("-" * 20)
 
 comparison = (
     analysis_df
@@ -893,13 +509,13 @@ comparison.index = [
 print(comparison)
 
 
-# ============================================================
-# 19. HOME-BIAS BY ARTIST COUNTRY
-# ============================================================
+# ------
+# Home-bias by artist country
+# ------
 
-print("\n" + "=" * 70)
+print("\n" + "-" * 20)
 print("HOME BIAS BY ARTIST COUNTRY")
-print("=" * 70)
+print("-" * 20)
 
 country_summary = (
     analysis_df
@@ -921,9 +537,9 @@ print(
 )
 
 
-# ============================================================
-# 20. SAVE CLEAN DATA
-# ============================================================
+# ------
+# Save clean data
+# ------
 
 analysis_df.to_csv(
     OUTPUT_CLEAN,
@@ -936,9 +552,9 @@ print(
 )
 
 
-# ============================================================
-# 21. SAVE REGRESSION RESULTS
-# ============================================================
+# ------
+# Save results
+# ------
 
 with open(
     OUTPUT_RESULTS,

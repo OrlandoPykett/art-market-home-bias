@@ -24,7 +24,7 @@ OUTPUT_FILE = "data/cleaned/regresions_language_proximity.csv"
 
 
 # ------
-# Apply name maps
+# Apply country maps
 # ------
 
 def standardise_cepii_country(country):
@@ -62,7 +62,6 @@ for column in ["country_o", "country_d"]:
         .str.strip()
         .replace(CEPII_COUNTRY_MAP)
     )
-
 
 # ------
 # Merge
