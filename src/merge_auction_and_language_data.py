@@ -5,9 +5,6 @@ from pathlib import Path
 
 from country_mapping import (
     convert_country,
-    NATIONALITY_COUNTRY_MAP,
-    ARTIST_NATIONALITY_MAP,
-    COUNTRY_ABBREVIATION_MAP,
     CEPII_COUNTRY_MAP
 )
 
@@ -16,11 +13,11 @@ from country_mapping import (
 # ------
 
 # Input
-transactions = pd.read_csv("data/cleaned/transactions_merged.csv")
+transactions = pd.read_csv("data/cleaned/dataset1_cleaned.csv")
 languages = pd.read_csv("data/raw/language_proximity.csv")
 
 # Output
-OUTPUT_FILE = "data/cleaned/regresions_language_proximity.csv"
+OUTPUT_FILE = "data/cleaned/dataset1_cleaned_proximity.csv"
 
 
 # ------

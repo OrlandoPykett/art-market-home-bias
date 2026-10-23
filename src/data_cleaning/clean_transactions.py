@@ -97,7 +97,7 @@ df2 = df2.rename(columns={
         "ART_MED": "medium",
         "ILLUS": "illustration",
         "HOUSE": "auction_house",
-        "AUCT_LOC": "auction_location",
+        "AUCT_LOC": "sale_country",
         "ANAME": "artist_name", 
         "uscpi": "uscpi",
         "ydate": "sale_y", 

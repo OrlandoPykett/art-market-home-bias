@@ -1,4 +1,4 @@
-height,price,CNV_RATE,artwork_y,shape,width,diameter,signed,medium,illustration,auction_house,auction_location,artist_name,uscpi,sale_y,price_usd,real_price_usd
+height,price,CNV_RATE,artwork_y,shape,width,diameter,signed,medium,illustration,auction_house,sale_country,artist_name,uscpi,sale_y,price_usd,real_price_usd
 36.0,720000.0,1.69,1900.0,0.0,36.0,,1.0,18.0,1.0,SO,LO,MONETCLAUDE,212.6,1987,426035.5029585799,
 36.0,,1.84,1900.0,0.0,37.0,,1.0,18.0,1.0,SO,LO,MONETCLAUDE,244.5,1990,,
 32.0,,1.82,1881.0,0.0,24.0,,1.0,18.0,1.0,CH,LO,MONETCLAUDE,214.4,1987,,

@@ -3,11 +3,11 @@ import pandas as pd
 import numpy as np
 import statsmodels.formula.api as smf
 
-INPUT_FILE = "data/transactions_merged.csv"
+INPUT_FILE = "data/cleaned/transactions_merged.csv"
 
-OUTPUT_FILE = "country_pair_regressions.csv"
-ARTIST_BREAKDOWN_FILE = "pair_artist_breakdown.csv"
-EXCLUSIONS_FILE = "country_pair_exclusions.csv"
+OUTPUT_FILE = "results/country_pair_regressions.csv"
+ARTIST_BREAKDOWN_FILE = "results/pair_artist_breakdown.csv"
+EXCLUSIONS_FILE = "results/country_pair_exclusions.csv"
 
 # Main robustness parameter:
 # Small difference between 1, 3, and 5. 10 produces significantly differentresult

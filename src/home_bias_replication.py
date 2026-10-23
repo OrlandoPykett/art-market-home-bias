@@ -7,7 +7,7 @@ from pathlib import Path
 import datetime
 
 
-df = pd.read_csv("data/cleaned/transactions_merged.csv", encoding="latin1", low_memory=False)
+df = pd.read_csv("data/cleaned/dataset1_cleaned.csv", encoding="latin1", low_memory=False)
 
 OUTPUT_CLEAN = "results/home_bias_cleaned.csv"
 OUTPUT_RESULTS = "results/home_bias_results.txt"
@@ -16,10 +16,10 @@ OUTPUT_RESULTS = "results/home_bias_results.txt"
 # Vosilov uses 1
 MIN_ARTIST_OBS = 1
 
-timeNow = datetime.datetime.now()
+time_now = datetime.datetime.now()
 
 print("-" * 20)
-print(f"Programme started at: {timeNow}")
+print(f"Programme started at: {time_now}")
 print("-" * 20)
 print(f"\nLoaded {len(df):,} observations.")
 print(f"Number of columns: {len(df.columns)}")
@@ -31,7 +31,16 @@ for col in df.columns:
 # Check that dataset has the required columns
 
 required_columns = [
-
+    "artist_name",
+    "artist_country",
+    "sale_country",
+    "auction_house",
+    "sale_y",
+    "materials",
+    "height",
+    "width",
+    "depth",
+    "real_price_usd",
 ]
 
 missing_columns = [
@@ -51,7 +60,7 @@ string_columns = [
     "artist_country",
     "sale_country",
     "auction_house",
-    "event_year",
+    "sale_y",
     "materials",
     "height",
     "width",
@@ -72,7 +81,7 @@ for col in string_columns:
 numeric_columns = [
     "real_price_usd",
     "ln_real_price",
-    "event_year",
+    "sale_y",
     "Year of Birth",
     "year_of_artwork",
     "height",
@@ -84,25 +93,22 @@ numeric_columns = [
 
 for col in numeric_columns:
     if col in df.columns:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
+        df[col] = pd.to_numeric(df[col], errors="coerce").astype("float64")
 
 
 # ------
 # Construct log real price
 # ------
 
-# Prefer the dataset's real_price_usd.
-# If it is missing, fall back to price_usd.
+df["analysis_price"] = pd.to_numeric(
+    df["real_price_usd"],
+    errors="coerce"
+)
 
-df["analysis_price"] = df["real_price_usd"]
-
-df.loc[
-    df["analysis_price"].isna(),
-    "analysis_price"
-] = df.loc[
-    df["analysis_price"].isna(),
-    "real_price_usd"
-]
+if "price_usd" in df.columns:
+    df["analysis_price"] = df["analysis_price"].fillna(
+        pd.to_numeric(df["price_usd"], errors="coerce")
+    )
 
 # Remove zero/negative prices
 df.loc[df["analysis_price"] <= 0, "analysis_price"] = np.nan
@@ -122,30 +128,32 @@ Otherwise:
     area = height × width
 '''
 
-df["artwork_area"] = (
-    df["height"] * df["width"]
+valid_area = (
+    df["height"].gt(0)
+    & df["width"].gt(0)
 )
 
-df["artwork_volume"] = (
-    df["height"] *
-    df["width"] *
-    df["depth"]
+valid_volume = (
+    valid_area
+    & df["depth"].gt(0)
 )
 
-# Main size variable:
-# volume where possible, otherwise area.
+df["artwork_area"] = np.nan
+df.loc[valid_area, "artwork_area"] = (
+    df.loc[valid_area, "height"]
+    * df.loc[valid_area, "width"]
+)
 
-df["size_measure"] = df["artwork_volume"]
+df["artwork_volume"] = np.nan
+df.loc[valid_volume, "artwork_volume"] = (
+    df.loc[valid_volume, "height"]
+    * df.loc[valid_volume, "width"]
+    * df.loc[valid_volume, "depth"]
+)
 
-df.loc[
-    df["size_measure"].isna(),
-    "size_measure"
-] = df.loc[
-    df["size_measure"].isna(),
-    "artwork_area"
-]
-
-df.loc[df["size_measure"] <= 0, "size_measure"] = np.nan
+df["size_measure"] = df["artwork_volume"].fillna(
+    df["artwork_area"]
+)
 
 df["log_size"] = np.log(df["size_measure"])
 
@@ -180,7 +188,7 @@ df["home_bias"] = np.nan
 
 valid_location = (
     df["sale_country"].notna()
-    & df["sale_country"].notna()
+    & df["artist_country"].notna()
 )
 
 df.loc[
@@ -224,24 +232,21 @@ if valid_location.sum() > 0:
 # Unmapped locations
 # ------
 
-unmapped = (
-    df.loc[
-        df["sale_country"].isna()
-        & df["artist_country"].notna(),
-        "country"
-    ]
-    .value_counts()
-)
-
-if len(unmapped) > 0:
-    print("\n" + "-" * 20)
-    print(f"There are {len(unmapped)} location valus that could not be mapped")
-
-    print(
-        "\nTop unmapped values:"
+if "country" in df.columns:
+    unmapped = (
+        df.loc[
+            df["sale_country"].isna()
+            & df["artist_country"].notna(),
+            "country"
+        ]
+        .value_counts()
     )
-    print(unmapped.head(100))
-    print("-" * 20)
+
+    if len(unmapped) > 0:
+        print("\nUnmapped sale-country values:")
+        print(unmapped.head(100))
+else:
+    print("\nNo raw 'country' column available for unmapped-location check.")
 
 
 # ------
@@ -253,7 +258,7 @@ analysis_vars = [
     "home_bias",
     "artist_name",
     "auction_house",
-    "event_year",
+    "sale_y",
     "materials",
     "log_size",
 ]
@@ -311,8 +316,8 @@ print(
 
 print(
     f"Years:              "
-    f"{analysis_df['event_year'].min():.0f}–"
-    f"{analysis_df['event_year'].max():.0f}"
+    f"{analysis_df['sale_y'].min():.0f}–"
+    f"{analysis_df['sale_y'].max():.0f}"
 )
 
 
@@ -344,7 +349,7 @@ home_bias
 + log_size
 + C(artist_name)
 + C(auction_house)
-+ C(event_year)
++ C(sale_y)
 + C(materials)
 """
 
@@ -475,7 +480,7 @@ print(
             "log_price",
             "home_bias",
             "log_size",
-            "event_year",
+            "sale_y",
         ]
     ].describe()
 )

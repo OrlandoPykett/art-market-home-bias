@@ -71,6 +71,8 @@ CITY_COUNTRY_MAP = {
     "Vienna": "Austria",
     
     # Belgium
+    "Antwerp": "Belgium",
+    "Antwerp-Berchem": "Belgium",
     "Brussells": "Belgium",
     "Brussels": "Belgium",
     "Lokeren": "Belgium",
@@ -183,8 +185,6 @@ CITY_COUNTRY_MAP = {
 
     # Netherlands
     "Amsterdam": "Netherlands",
-    "Antwerp": "Netherlands",
-    "Antwerp-Berchem": "Netherlands",
     "Lot 195 - Arts & Antiques Group": "Netherlands",
     "Lot 278 - Arts & Antiques Group": "Netherlands",
     "Lot 347 - Arts & Antiques Group": "Netherlands",
@@ -373,6 +373,7 @@ COUNTRIES = {
     "Germany",
     "Ghana",
     "Greece",
+    "Hong Kong",
     "Iceland",
     "India",
     "Iran",
@@ -465,6 +466,58 @@ ARTIST_NATIONALITY_MAP = {
     "VUILLARDEDOUAR": "France",
 }
 
+NATIONALITIES = {
+    "American",
+    "German",
+    "British",
+    "Italian",
+    "Austrian",
+    "Japanese",
+    "French",
+    "Swiss",
+    "Belgian",
+    "Brazilian",
+    "Icelandic",
+    "Colombian",
+    "Spanish",
+    "Chinese",
+    "South African",
+    "Danish",
+    "Dutch",
+    "Argentine",
+    "Iranian",
+    "Canadian",
+    "Greek",
+    "Indian",
+    "Polish",
+    "Venezuelan",
+    "Mexican",
+    "Portuguese",
+    "Czech",
+    "Korean",
+    "Norwegian",
+    "Israeli",
+    "Australian",
+    "Egyptian",
+    "Russian",
+    "Palestinian",
+    "Chilean",
+    "Irish",
+    "Malian",
+    "Pakistani",
+    "Ghanaian",
+    "Scottish",
+    "Algerian",
+    "Cuban",
+    "Cameroonian",
+    "Georgian",
+    "Bulgarian",
+    "Moroccan",
+    "Finnish",
+    "Swedish",
+    "Yugoslav",
+}
+
 COUNTRY_ABBREVIATION_MAP = {
     "LO": "United Kingdom",
     "NY": "United States",
@@ -473,13 +526,12 @@ COUNTRY_ABBREVIATION_MAP = {
 CEPII_COUNTRY_MAP = {
     "United States of America": "United States",
     "United Kingdom of Great Britain and Northern Ireland": "United Kingdom",
-    "Belgium and Luxembourg": "Belgium",
+    "Belgium and Luxembourg": "Belgium", # TODO handle country grouping
     "Russian Federation": "Russia",
     "Iran (Islamic Republic of)": "Iran",
     "Venezuela (Bolivarian Republic of)": "Venezuela",
     "China, Hong Kong Special Administrative Region": "Hong Kong",
     "Republic of Korea": "South Korea"
-    
 }
 
 
@@ -488,10 +540,11 @@ def convert_country(value):
     Convert a value from the raw `country` column into a country name.
 
     Handles:
-    1. Numeric country codes
-    2. Existing country names
-    3. City/location names
-    4. Unknown values
+    * Numeric country codes
+    * Existing country names
+    * City/location names
+    * Nationalities
+    * Unknown values
     """
 
     if value is None:
@@ -500,16 +553,17 @@ def convert_country(value):
     value = str(value).strip()
 
     # Missing values
-    if value in {"", "nan", "None"}:
+    if value in {"", "nan", "None", "NaN", "N/A", "unknown"}:
         return None
 
-    # Numeric country codes
+    
     try:
+        # Numeric country codes -> country
         code = int(float(value))
 
         if code in COUNTRY_CODE_MAP:
             return COUNTRY_CODE_MAP[code]
-
+        
     except ValueError:
         pass
 
@@ -517,8 +571,22 @@ def convert_country(value):
     if value in COUNTRIES:
         return value
 
+    # Nationality -> country
+    if value in NATIONALITY_COUNTRY_MAP:
+        return NATIONALITY_COUNTRY_MAP.get(value)
+
+    # Abbreviation -> country
+    if value in COUNTRY_ABBREVIATION_MAP:
+        return COUNTRY_ABBREVIATION_MAP.get(value)
+    
+    # CEPII format -> country
+    if value in CEPII_COUNTRY_MAP:
+        return CEPII_COUNTRY_MAP.get(value)
+
     # City/location → country
-    return CITY_COUNTRY_MAP.get(value)
+    if value in CITY_COUNTRY_MAP:
+        return CITY_COUNTRY_MAP.get(value)
+
 
 def map_sale_country(df):
     """
