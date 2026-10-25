@@ -7,7 +7,7 @@ INPUT_FILE = "data/cleaned/transactions_merged.csv"
 
 OUTPUT_FILE = "results/country_pair_regressions.csv"
 ARTIST_BREAKDOWN_FILE = "results/pair_artist_breakdown.csv"
-EXCLUSIONS_FILE = "results/country_pair_exclusions.csv"
+EXCLUSIONS_FILE = "country_pair_exclusions.csv"
 
 # Main robustness parameter:
 # Small difference between 1, 3, and 5. 10 produces significantly differentresult

@@ -92,6 +92,7 @@ transactions = transactions.merge(
 )
 
 # Set values for domestic transactions
+transactions.loc[domestic, ["prox1", "prox2"]] = 0
 transactions.loc[domestic, "cl"] = 1
 
 # Domestic transactions have no CEPII self-pair, so they are expected

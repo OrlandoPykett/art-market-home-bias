@@ -38,6 +38,9 @@ for data in [df1]:
         data[col] = data[col].apply(convert_country)
 
 
+# ------
+# Concat datasets | Currently only uses dataset 1
+# ------
 # TODO check for duplicates
 df = pd.concat([df1], ignore_index=True)
 

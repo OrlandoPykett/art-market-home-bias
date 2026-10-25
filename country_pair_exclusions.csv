@@ -1,0 +1,271 @@
+artist_country,foreign_sale_country,qualifying_artists,pair_observations,home_observations,foreign_observations,exclusion_reason
+Argentina,Austria,1,10,4,6,Too few qualifying artists
+Argentina,Belgium,0,0,0,0,Too few qualifying artists
+Argentina,Brazil,0,0,0,0,Too few qualifying artists
+Argentina,Canada,0,0,0,0,Too few qualifying artists
+Argentina,Denmark,1,9,4,5,Too few qualifying artists
+Argentina,France,1,74,4,70,Too few qualifying artists
+Argentina,Germany,1,20,4,16,Too few qualifying artists
+Argentina,Italy,1,62,4,58,Too few qualifying artists
+Argentina,Netherlands,1,10,4,6,Too few qualifying artists
+Argentina,Spain,0,0,0,0,Too few qualifying artists
+Argentina,Sweden,1,10,4,6,Too few qualifying artists
+Argentina,Switzerland,1,7,4,3,Too few qualifying artists
+Argentina,United Kingdom,1,14,4,10,Too few qualifying artists
+Argentina,United States,1,55,4,51,Too few qualifying artists
+Australia,Denmark,0,0,0,0,Too few qualifying artists
+Australia,Sweden,1,37,33,4,Too few qualifying artists
+Australia,United Kingdom,2,62,39,23,Too few qualifying artists
+Australia,United States,2,76,39,37,Too few qualifying artists
+Austria,Australia,0,0,0,0,Too few qualifying artists
+Austria,Belgium,0,0,0,0,Too few qualifying artists
+Austria,Denmark,0,0,0,0,Too few qualifying artists
+Austria,Italy,4,1742,1546,196,Too few qualifying artists
+Austria,Sweden,1,41,38,3,Too few qualifying artists
+Belgium,Australia,0,0,0,0,Too few qualifying artists
+Belgium,Austria,0,0,0,0,Too few qualifying artists
+Belgium,Denmark,0,0,0,0,Too few qualifying artists
+Belgium,France,2,79,50,29,Too few qualifying artists
+Belgium,Germany,1,58,45,13,Too few qualifying artists
+Belgium,India,0,0,0,0,Too few qualifying artists
+Belgium,Italy,0,0,0,0,Too few qualifying artists
+Belgium,Japan,0,0,0,0,Too few qualifying artists
+Belgium,Mexico,0,0,0,0,Too few qualifying artists
+Belgium,Netherlands,2,79,50,29,Too few qualifying artists
+Belgium,Norway,0,0,0,0,Too few qualifying artists
+Belgium,Sweden,0,0,0,0,Too few qualifying artists
+Belgium,Switzerland,0,0,0,0,Too few qualifying artists
+Belgium,United Kingdom,3,84,56,28,Too few qualifying artists
+Belgium,United States,3,69,56,13,Too few qualifying artists
+Brazil,China,1,15,12,3,Too few qualifying artists
+Brazil,France,1,51,12,39,Too few qualifying artists
+Brazil,Germany,0,0,0,0,Too few qualifying artists
+Brazil,Iran,0,0,0,0,Too few qualifying artists
+Brazil,Italy,1,29,12,17,Too few qualifying artists
+Brazil,Japan,0,0,0,0,Too few qualifying artists
+Brazil,Netherlands,0,0,0,0,Too few qualifying artists
+Brazil,Sweden,1,15,12,3,Too few qualifying artists
+Brazil,United Kingdom,4,224,42,182,Too few qualifying artists
+Canada,Belgium,0,0,0,0,Too few qualifying artists
+Canada,Brazil,0,0,0,0,Too few qualifying artists
+Canada,France,0,0,0,0,Too few qualifying artists
+Canada,Germany,0,0,0,0,Too few qualifying artists
+Canada,Italy,0,0,0,0,Too few qualifying artists
+Canada,Netherlands,0,0,0,0,Too few qualifying artists
+Canada,Sweden,0,0,0,0,Too few qualifying artists
+Canada,Switzerland,0,0,0,0,Too few qualifying artists
+Canada,United Kingdom,0,0,0,0,Too few qualifying artists
+Canada,United States,0,0,0,0,Too few qualifying artists
+China,Austria,0,0,0,0,Too few qualifying artists
+China,Brazil,0,0,0,0,Too few qualifying artists
+China,Germany,1,178,175,3,Too few qualifying artists
+China,Indonesia,0,0,0,0,Too few qualifying artists
+China,Italy,0,0,0,0,Too few qualifying artists
+China,Japan,0,0,0,0,Too few qualifying artists
+China,Netherlands,0,0,0,0,Too few qualifying artists
+China,South Korea,0,0,0,0,Too few qualifying artists
+China,Switzerland,0,0,0,0,Too few qualifying artists
+China,Taiwan,3,230,205,25,Too few qualifying artists
+Denmark,Austria,1,225,222,3,Too few qualifying artists
+Denmark,Brazil,0,0,0,0,Too few qualifying artists
+Denmark,France,1,231,222,9,Too few qualifying artists
+Denmark,Germany,2,357,263,94,Too few qualifying artists
+Denmark,Italy,0,0,0,0,Too few qualifying artists
+Denmark,Netherlands,1,232,222,10,Too few qualifying artists
+Denmark,Norway,0,0,0,0,Too few qualifying artists
+Denmark,Qatar,0,0,0,0,Too few qualifying artists
+Denmark,Sweden,1,245,222,23,Too few qualifying artists
+Denmark,Switzerland,1,233,222,11,Too few qualifying artists
+Denmark,United Kingdom,2,402,263,139,Too few qualifying artists
+Denmark,United States,2,347,263,84,Too few qualifying artists
+France,Australia,0,0,0,0,Too few qualifying artists
+France,Austria,0,0,0,0,Too few qualifying artists
+France,Belgium,1,294,285,9,Too few qualifying artists
+France,Brazil,0,0,0,0,Too few qualifying artists
+France,China,1,288,285,3,Too few qualifying artists
+France,Denmark,1,398,356,42,Too few qualifying artists
+France,Hong Kong,0,0,0,0,Too few qualifying artists
+France,Japan,0,0,0,0,Too few qualifying artists
+France,Qatar,0,0,0,0,Too few qualifying artists
+France,South Korea,1,291,285,6,Too few qualifying artists
+France,Sweden,4,717,693,24,Too few qualifying artists
+Germany,Australia,0,0,0,0,Too few qualifying artists
+Germany,Belgium,0,0,0,0,Too few qualifying artists
+Germany,Brazil,0,0,0,0,Too few qualifying artists
+Germany,China,0,0,0,0,Too few qualifying artists
+Germany,Indonesia,1,7,4,3,Too few qualifying artists
+Germany,Iran,0,0,0,0,Too few qualifying artists
+Germany,Japan,0,0,0,0,Too few qualifying artists
+Germany,Norway,0,0,0,0,Too few qualifying artists
+Germany,South Korea,1,496,493,3,Too few qualifying artists
+Germany,Spain,0,0,0,0,Too few qualifying artists
+India,China,3,136,114,22,Too few qualifying artists
+India,France,1,46,42,4,Too few qualifying artists
+India,Hong Kong,0,0,0,0,Too few qualifying artists
+India,United Kingdom,4,181,119,62,Too few qualifying artists
+Iran,Australia,0,0,0,0,Too few qualifying artists
+Iran,Austria,1,37,32,5,Too few qualifying artists
+Iran,Denmark,1,35,32,3,Too few qualifying artists
+Iran,France,1,54,32,22,Too few qualifying artists
+Iran,Germany,1,47,32,15,Too few qualifying artists
+Iran,Italy,1,46,32,14,Too few qualifying artists
+Iran,Morocco,0,0,0,0,Too few qualifying artists
+Iran,Netherlands,1,36,32,4,Too few qualifying artists
+Iran,Sweden,1,38,32,6,Too few qualifying artists
+Iran,Switzerland,0,0,0,0,Too few qualifying artists
+Iran,United Kingdom,1,156,32,124,Too few qualifying artists
+Iran,United States,1,211,32,179,Too few qualifying artists
+Israel,Denmark,0,0,0,0,Too few qualifying artists
+Israel,Germany,0,0,0,0,Too few qualifying artists
+Israel,Netherlands,0,0,0,0,Too few qualifying artists
+Israel,United Kingdom,0,0,0,0,Too few qualifying artists
+Israel,United States,0,0,0,0,Too few qualifying artists
+Italy,Australia,0,0,0,0,Too few qualifying artists
+Italy,Belgium,1,243,240,3,Too few qualifying artists
+Italy,Denmark,1,457,449,8,Too few qualifying artists
+Italy,Sweden,4,915,874,41,Too few qualifying artists
+Japan,Australia,0,0,0,0,Too few qualifying artists
+Japan,Austria,2,60,49,11,Too few qualifying artists
+Japan,Brazil,0,0,0,0,Too few qualifying artists
+Japan,China,3,344,55,289,Too few qualifying artists
+Japan,Denmark,0,0,0,0,Too few qualifying artists
+Japan,France,3,150,55,95,Too few qualifying artists
+Japan,Germany,2,70,49,21,Too few qualifying artists
+Japan,Hong Kong,3,125,55,70,Too few qualifying artists
+Japan,Indonesia,3,95,55,40,Too few qualifying artists
+Japan,Iran,0,0,0,0,Too few qualifying artists
+Japan,Italy,1,40,30,10,Too few qualifying artists
+Japan,Netherlands,2,78,49,29,Too few qualifying artists
+Japan,Singapore,1,36,30,6,Too few qualifying artists
+Japan,South Africa,0,0,0,0,Too few qualifying artists
+Japan,South Korea,1,42,30,12,Too few qualifying artists
+Japan,Sweden,0,0,0,0,Too few qualifying artists
+Japan,Switzerland,0,0,0,0,Too few qualifying artists
+Japan,Taiwan,2,67,49,18,Too few qualifying artists
+Japan,United Kingdom,3,568,55,513,Too few qualifying artists
+Japan,United States,3,1074,55,1019,Too few qualifying artists
+Mexico,Brazil,0,0,0,0,Too few qualifying artists
+Mexico,France,1,15,6,9,Too few qualifying artists
+Mexico,Germany,0,0,0,0,Too few qualifying artists
+Mexico,Netherlands,0,0,0,0,Too few qualifying artists
+Mexico,United Kingdom,1,55,6,49,Too few qualifying artists
+Mexico,United States,1,126,6,120,Too few qualifying artists
+Morocco,France,0,0,0,0,Too few qualifying artists
+Morocco,Iran,0,0,0,0,Too few qualifying artists
+Morocco,Qatar,0,0,0,0,Too few qualifying artists
+Morocco,United Arab Emirates,0,0,0,0,Too few qualifying artists
+Morocco,United Kingdom,1,7,3,4,Too few qualifying artists
+Morocco,United States,0,0,0,0,Too few qualifying artists
+Netherlands,Belgium,1,15,7,8,Too few qualifying artists
+Netherlands,France,2,57,22,35,Too few qualifying artists
+Netherlands,Germany,2,46,28,18,Too few qualifying artists
+Netherlands,Italy,2,38,29,9,Too few qualifying artists
+Netherlands,Sweden,0,0,0,0,Too few qualifying artists
+Netherlands,Switzerland,0,0,0,0,Too few qualifying artists
+Netherlands,United States,4,240,52,188,Too few qualifying artists
+Norway,Denmark,1,113,106,7,Too few qualifying artists
+Norway,Germany,0,0,0,0,Too few qualifying artists
+Norway,Italy,0,0,0,0,Too few qualifying artists
+Norway,Netherlands,1,113,106,7,Too few qualifying artists
+Norway,Sweden,1,134,106,28,Too few qualifying artists
+Norway,United Kingdom,1,122,106,16,Too few qualifying artists
+Norway,United States,1,110,106,4,Too few qualifying artists
+Portugal,France,1,17,7,10,Too few qualifying artists
+Portugal,Germany,0,0,0,0,Too few qualifying artists
+Portugal,Hong Kong,0,0,0,0,Too few qualifying artists
+Portugal,Netherlands,0,0,0,0,Too few qualifying artists
+Portugal,Sweden,0,0,0,0,Too few qualifying artists
+Portugal,Switzerland,0,0,0,0,Too few qualifying artists
+Portugal,United Kingdom,1,25,7,18,Too few qualifying artists
+Portugal,United States,0,0,0,0,Too few qualifying artists
+South Africa,Australia,1,170,166,4,Too few qualifying artists
+South Africa,Austria,0,0,0,0,Too few qualifying artists
+South Africa,France,1,174,166,8,Too few qualifying artists
+South Africa,Germany,1,36,18,18,Too few qualifying artists
+South Africa,Italy,0,0,0,0,Too few qualifying artists
+South Africa,Netherlands,1,81,18,63,Too few qualifying artists
+South Africa,Sweden,0,0,0,0,Too few qualifying artists
+South Africa,Switzerland,1,25,18,7,Too few qualifying artists
+South Africa,United Kingdom,3,393,200,193,Too few qualifying artists
+South Africa,United States,4,404,210,194,Too few qualifying artists
+South Korea,China,1,37,19,18,Too few qualifying artists
+South Korea,France,1,25,19,6,Too few qualifying artists
+South Korea,Germany,0,0,0,0,Too few qualifying artists
+South Korea,Hong Kong,0,0,0,0,Too few qualifying artists
+South Korea,Indonesia,0,0,0,0,Too few qualifying artists
+South Korea,Italy,1,25,19,6,Too few qualifying artists
+South Korea,Japan,1,34,19,15,Too few qualifying artists
+South Korea,United Kingdom,1,25,19,6,Too few qualifying artists
+South Korea,United States,1,75,19,56,Too few qualifying artists
+Spain,Austria,0,0,0,0,Too few qualifying artists
+Spain,Belgium,0,0,0,0,Too few qualifying artists
+Spain,Brazil,0,0,0,0,Too few qualifying artists
+Spain,China,0,0,0,0,Too few qualifying artists
+Spain,Denmark,0,0,0,0,Too few qualifying artists
+Spain,France,3,462,13,449,Too few qualifying artists
+Spain,Germany,2,24,8,16,Too few qualifying artists
+Spain,Italy,1,52,3,49,Too few qualifying artists
+Spain,Netherlands,0,0,0,0,Too few qualifying artists
+Spain,Norway,0,0,0,0,Too few qualifying artists
+Spain,Sweden,0,0,0,0,Too few qualifying artists
+Spain,Switzerland,1,8,5,3,Too few qualifying artists
+Spain,United Kingdom,4,171,16,155,Too few qualifying artists
+Spain,United States,3,66,13,53,Too few qualifying artists
+Sweden,United Kingdom,1,6,3,3,Too few qualifying artists
+Switzerland,Austria,4,190,168,22,Too few qualifying artists
+Switzerland,Belgium,1,32,23,9,Too few qualifying artists
+Switzerland,China,0,0,0,0,Too few qualifying artists
+Switzerland,Denmark,1,96,77,19,Too few qualifying artists
+Switzerland,Italy,2,333,100,233,Too few qualifying artists
+Switzerland,Netherlands,4,232,197,35,Too few qualifying artists
+Switzerland,Sweden,3,155,134,21,Too few qualifying artists
+United Kingdom,Australia,3,2501,2451,50,Too few qualifying artists
+United Kingdom,Belgium,1,172,168,4,Too few qualifying artists
+United Kingdom,Brazil,0,0,0,0,Too few qualifying artists
+United Kingdom,China,2,1149,1136,13,Too few qualifying artists
+United Kingdom,Denmark,2,1173,1162,11,Too few qualifying artists
+United Kingdom,Hong Kong,0,0,0,0,Too few qualifying artists
+United Kingdom,India,1,33,17,16,Too few qualifying artists
+United Kingdom,Indonesia,0,0,0,0,Too few qualifying artists
+United Kingdom,Iran,0,0,0,0,Too few qualifying artists
+United Kingdom,Ireland,0,0,0,0,Too few qualifying artists
+United Kingdom,Japan,0,0,0,0,Too few qualifying artists
+United Kingdom,Norway,0,0,0,0,Too few qualifying artists
+United Kingdom,Qatar,0,0,0,0,Too few qualifying artists
+United Kingdom,South Africa,3,2290,2273,17,Too few qualifying artists
+United Kingdom,South Korea,1,980,977,3,Too few qualifying artists
+United Kingdom,Spain,0,0,0,0,Too few qualifying artists
+United Kingdom,Sweden,4,2502,2432,70,Too few qualifying artists
+United Kingdom,Venezuela,0,0,0,0,Too few qualifying artists
+United States,Australia,2,1695,1689,6,Too few qualifying artists
+United States,Belgium,1,396,385,11,Too few qualifying artists
+United States,Brazil,1,327,323,4,Too few qualifying artists
+United States,Canada,0,0,0,0,Too few qualifying artists
+United States,China,0,0,0,0,Too few qualifying artists
+United States,Denmark,0,0,0,0,Too few qualifying artists
+United States,Greece,0,0,0,0,Too few qualifying artists
+United States,Hong Kong,0,0,0,0,Too few qualifying artists
+United States,Iran,1,388,385,3,Too few qualifying artists
+United States,Ireland,0,0,0,0,Too few qualifying artists
+United States,Israel,0,0,0,0,Too few qualifying artists
+United States,Japan,2,2988,2979,9,Too few qualifying artists
+United States,Mexico,0,0,0,0,Too few qualifying artists
+United States,Morocco,0,0,0,0,Too few qualifying artists
+United States,New Zealand,0,0,0,0,Too few qualifying artists
+United States,Norway,0,0,0,0,Too few qualifying artists
+United States,Singapore,0,0,0,0,Too few qualifying artists
+United States,South Africa,3,2535,2518,17,Too few qualifying artists
+United States,South Korea,0,0,0,0,Too few qualifying artists
+United States,United Arab Emirates,0,0,0,0,Too few qualifying artists
+Venezuela,Austria,0,0,0,0,Too few qualifying artists
+Venezuela,Belgium,1,7,3,4,Too few qualifying artists
+Venezuela,Brazil,1,6,3,3,Too few qualifying artists
+Venezuela,France,1,56,3,53,Too few qualifying artists
+Venezuela,Germany,1,28,3,25,Too few qualifying artists
+Venezuela,Italy,1,16,3,13,Too few qualifying artists
+Venezuela,Mexico,0,0,0,0,Too few qualifying artists
+Venezuela,Netherlands,0,0,0,0,Too few qualifying artists
+Venezuela,Sweden,1,11,3,8,Too few qualifying artists
+Venezuela,Switzerland,1,10,3,7,Too few qualifying artists
+Venezuela,United Kingdom,1,31,3,28,Too few qualifying artists
+Venezuela,United States,1,116,3,113,Too few qualifying artists
