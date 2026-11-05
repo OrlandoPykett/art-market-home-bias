@@ -190,6 +190,7 @@ home_mask = (
 )
 
 print(f"Usable observations: {len(df):,}")
+print(f"Unique artists: {df['artist_name'].nunique()}")
 print(f"Artist countries: {df['artist_country'].nunique()}")
 print(f"Sale countries: {df['sale_country'].nunique()}")
 print(f"Home-market observations: {int(home_mask.sum()):,}")

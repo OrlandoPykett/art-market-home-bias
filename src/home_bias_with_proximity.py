@@ -269,7 +269,13 @@ variables = ["home_bias", "prox2","log_size"]
 results_table = pd.DataFrame({
     "Coefficient": model.params[variables],
     "Std. Error": model.bse[variables],
-    "P-value": model.pvalues[variables]
+    "P-value": model.pvalues[variables],
+    "95% Conf. Interval Lower": model.conf_int().loc[variables][0],
+    "95% Conf. Interval Upper": model.conf_int().loc[variables][1],
+    "Implied Price Difference (%)": (np.exp(model.params[variables]) - 1) * 100,
+    "Significance": model.pvalues[variables].apply(lambda p: '***' if p < 0.01 else ('**' if p < 0.05 else ('*' if p < 0.1 else ''))),
+    "R-squared": model.rsquared,
+    "Adj. R-squared": model.rsquared_adj
 })
 
 print("\nRegression results:")

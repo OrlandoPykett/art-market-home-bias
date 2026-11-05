@@ -136,24 +136,24 @@ def create_price_effects_map(data_df):
         hoverinfo='text'
     ))
 
-    # Layout configuration
+    # Layout configuration with explicit white template to block browser/environment tints
     fig.update_layout(
+        template='plotly_white',  # Forces a clean, neutral white base template
         title=dict(
-            text="<b>International Price Effects Map</b><br>"
-                 "<sup>Line width = |Effect %| | Red = High Significance (p < 0.001), Orange = Moderate (p < 0.05), Grey = Insignificant</sup>",
+            text="<b>International Price Effects Map</b>",
             x=0.5
         ),
         showlegend=False,
         geo=dict(
             projection_type='equirectangular',
             showland=True,
-            landcolor='rgb(243, 243, 243)',
-            countrycolor='rgb(204, 204, 204)',
-            coastlinecolor='rgb(204, 204, 204)',
+            landcolor='rgb(238, 235, 226)',     # Parchment / Sand land
+            countrycolor='rgb(200, 195, 185)',
+            coastlinecolor='rgb(200, 195, 185)',
             showocean=True,
-            oceancolor='rgb(235, 245, 255)',
+            oceancolor='rgb(210, 225, 240)',     # Muted soft blue water
         ),
-        margin=dict(l=20, r=20, t=80, b=20)
+        margin=dict(l=20, r=20, t=60, b=20)
     )
 
     return fig
