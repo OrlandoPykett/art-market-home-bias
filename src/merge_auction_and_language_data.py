@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-from country_mapping import (
+from src.shared.country_mapping import (
     convert_country,
     CEPII_COUNTRY_MAP
 )

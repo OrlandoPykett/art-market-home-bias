@@ -3,7 +3,7 @@ import numpy as np
 import statsmodels.formula.api as smf
 import datetime
 
-from country_mapping import (
+from src.shared.country_mapping import (
     convert_country,
     map_sale_country,
     CITY_COUNTRY_MAP,

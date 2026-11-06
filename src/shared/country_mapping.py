@@ -534,6 +534,47 @@ CEPII_COUNTRY_MAP = {
     "Republic of Korea": "South Korea"
 }
 
+# ISO 3166-1 numeric (WVS B_COUNTRY) -> your canonical country names.
+# Only countries where artworks are sold matter for the merge; extend as needed.
+ISO_NUMERIC_MAP = {
+    32: "Argentina", 36: "Australia", 40: "Austria", 56: "Belgium",
+    76: "Brazil", 124: "Canada", 156: "China", 158: "Taiwan",
+    170: "Colombia", 208: "Denmark", 246: "Finland", 250: "France",
+    276: "Germany", 300: "Greece", 344: "Hong Kong", 356: "India",
+    360: "Indonesia", 372: "Ireland", 376: "Israel", 380: "Italy",
+    392: "Japan", 410: "South Korea", 504: "Morocco", 528: "Netherlands",
+    554: "New Zealand", 578: "Norway", 620: "Portugal", 634: "Qatar",
+    702: "Singapore", 710: "South Africa", 724: "Spain", 752: "Sweden",
+    756: "Switzerland", 784: "United Arab Emirates", 826: "United Kingdom",
+    840: "United States", 862: "Venezuela",
+}
+
+# Replace the hand-typed COUNTRIES set with one derived from all maps
+COUNTRIES = (
+    set(COUNTRY_CODE_MAP.values())
+    | set(CITY_COUNTRY_MAP.values())
+    | set(NATIONALITY_COUNTRY_MAP.values())
+    | set(ARTIST_NATIONALITY_MAP.values())
+    | set(COUNTRY_ABBREVIATION_MAP.values())
+    | set(CEPII_COUNTRY_MAP.values())
+    | set(ISO_NUMERIC_MAP.values())
+) - {None}
+
+
+def convert_wvs_country(value):
+    """Convert a WVS B_COUNTRY (ISO numeric) code to a country name."""
+    try:
+        return ISO_NUMERIC_MAP.get(int(float(value)))
+    except (TypeError, ValueError):
+        return None
+
+
+def report_unmatched(series_raw, series_clean, label):
+    """Print raw values that failed to map, so gaps are visible."""
+    bad = series_raw[series_clean.isna() & series_raw.notna()].unique()
+    if len(bad):
+        print(f"[{label}] unmapped values: {sorted(map(str, bad))}")
+
 
 def convert_country(value):
     """

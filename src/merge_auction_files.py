@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from country_mapping import (
+from src.shared.country_mapping import (
     convert_country,
     NATIONALITY_COUNTRY_MAP,
     ARTIST_NATIONALITY_MAP,

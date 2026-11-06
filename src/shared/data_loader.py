@@ -8,7 +8,7 @@ validating their structure and standardising country names.
 
 import pandas as pd
 
-from src.country_mapping import convert_country
+from .country_mapping import convert_country
 from src.shared.config import DATASET1_FILE, REQUIRED_COLUMNS
 
 

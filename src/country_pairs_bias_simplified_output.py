@@ -4,7 +4,7 @@ import numpy as np
 import statsmodels.formula.api as smf
 
 from pathlib import Path
-from country_mapping import convert_country
+from src.shared.country_mapping import convert_country
 
 
 # --------------------------------------------------

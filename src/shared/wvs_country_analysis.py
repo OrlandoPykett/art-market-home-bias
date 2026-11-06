@@ -12,7 +12,7 @@ SURVEY_WAVE_NUMBER = 7
 #   1. Very proud, 2. Quite proud, 3. Not very proud, 4. Not at all proud, 5. I am not [country's nationality]
 
 QUESTION_OF_INTEREST = 254
-TARGET_RESPONSE = 4
+TARGET_RESPONSE = 1
 
 INPUT_FILE = "data/raw/WVS_Cross-National_Wave_7_csv_v6_0.csv"
 OUTPUT_FILE = "results/hello.csv"
@@ -66,6 +66,3 @@ for country, country_df in countries.items():
     proportion = response_proportion(TARGET_RESPONSE, country_df)
     print(country)
     print(proportion)
-
-
-

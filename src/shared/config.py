@@ -12,6 +12,8 @@ DATASET2_FILE = "data/cleaned/dataset2_cleaned.csv"
 
 OUTPUT_FILE = "results/home_bias_regression.csv"
 
+LANGUAGE_FILE = "data/raw/language_proximity.csv"
+
 
 # Regression
 # --------------------
