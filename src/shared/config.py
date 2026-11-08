@@ -15,6 +15,7 @@ OUTPUT_FILE = "results/home_bias_regression.csv"
 # extras
 LANGUAGE_FILE = "data/raw/language_proximity.csv"
 WVS_FILE = "data/raw/WVS_Cross-National_Wave_7_csv_v6_0.csv"
+EVS_FILE = "data/raw/EVS_2008.csv"
 
 
 # Regression

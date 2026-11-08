@@ -40,7 +40,7 @@ countries_wvs = {
 
 countries_evs = {
     country : group
-    for country, group in df_evs.groupby("c_abrv")
+    for country, group in df_evs.groupby("country")
 }
 
 

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Callable
 import pandas as pd
 
-from src.shared.config import LANGUAGE_FILE, WVS_FILE
+from src.shared.config import LANGUAGE_FILE, WVS_FILE, EVS_FILE
 from src.home_bias.language_proximity import add_language_proximity
 from src.shared.national_pride import add_national_pride
 
@@ -23,6 +23,6 @@ EXTRAS = {
 
     "national_pride": Extra(
         columns=["national_pride", "survey_responses"],
-        add=lambda df: add_national_pride(df, WVS_FILE),
+        add=lambda df: add_national_pride(df, WVS_FILE, EVS_FILE),
     ),
 }
