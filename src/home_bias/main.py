@@ -26,30 +26,6 @@ def prepare_analysis_data():
     df = create_home_bias(df)
     df = create_artwork_size(df)
 
-    # TEMPORARY DIAGNOSTICS
-    print("\n========== AUCTION COUNTRY NAMES ==========")
-
-    print(
-        df["sale_country"]
-        .value_counts()
-        .head(30)
-        .to_string()
-    )
-
-    print("\nAuction mappings containing 'France':")
-    print(
-        sorted(
-            df.loc[
-                df["sale_country"].astype(str).str.contains(
-                    "France", case=False
-                ),
-                "sale_country"
-            ].dropna().unique()
-        )
-    )
-
-    print("===========================================\n")
-
     return df
 
 
@@ -57,7 +33,8 @@ def main():
     print(f"Started: {datetime.datetime.now()}")
     df = prepare_analysis_data()
 
-    models, table = run_combinations(df, SPECS, common_sample=False)
+    models, table = run_combinations(df, SPECS, common_sample=True)
+    print(models[0].summary())
     print(table)
 
     print(f"Finished: {datetime.datetime.now()}")

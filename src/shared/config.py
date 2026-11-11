@@ -14,9 +14,18 @@ OUTPUT_FILE = "results/home_bias_regression.csv"
 
 # extras
 LANGUAGE_FILE = "data/raw/language_proximity.csv"
-WVS_FILE = "data/raw/WVS_Cross-National_Wave_7_csv_v6_0.csv"
-EVS_FILE = "data/raw/EVS_2008.csv"
 
+WVS_FILE_1 = "data/raw/wvs_and_evs_data/WVS_wave_1.csv"
+WVS_FILE_2 = "data/raw/wvs_and_evs_data/WVS_wave_2.csv"
+WVS_FILE_3 = "data/raw/wvs_and_evs_data/WVS_wave_3.csv"
+WVS_FILE_4 = "data/raw/wvs_and_evs_data/WVS_wave_4.csv"
+WVS_FILE_5 = "data/raw/wvs_and_evs_data/WVS_wave_5.csv"
+WVS_FILE_6 = "data/raw/wvs_and_evs_data/WVS_wave_6.csv"
+
+EVS_FILE_1 = "data/raw/wvs_and_evs_data/EVS_1981.csv"
+EVS_FILE_2 = "data/raw/wvs_and_evs_data/EVS_1990.csv"
+EVS_FILE_3 = "data/raw/wvs_and_evs_data/EVS_1999.csv"
+EVS_FILE_4 = "data/raw/wvs_and_evs_data/EVS_2008.csv"
 
 # Regression
 # --------------------

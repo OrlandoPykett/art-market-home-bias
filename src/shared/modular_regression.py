@@ -11,9 +11,14 @@ REQUIRED_COLS = ["log_price", "artist_name", "auction_house", "sale_y", "materia
 
 
 def add_extras(df, extras):
-    """Merge every requested extra once, onto the base data."""
-    for name in extras:
-        df = EXTRAS[name].add(df)
+    """Merge requested extras and their dependencies once."""
+
+    required_extras = set(extras)
+
+    for name in EXTRAS:
+        if name in required_extras:
+            df = EXTRAS[name].add(df)
+
     return df
 
 
