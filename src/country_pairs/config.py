@@ -3,7 +3,7 @@ import os
 # File paths
 # --------------------
 
-INPUT_FILE = "data/cleaned/transactions_merged.csv"
+INPUT_FILE = "data/cleaned/dataset1_cleaned.csv"
 
 OUTPUT_FILE = "results/country_pair_regressions.csv"
 ARTIST_BREAKDOWN_FILE = "results/pair_artist_breakdown.csv"

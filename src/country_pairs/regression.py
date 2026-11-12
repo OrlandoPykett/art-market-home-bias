@@ -197,16 +197,63 @@ def estimate_country_pair_regression(
     # --------------------
 
     formula = (
-        "ln_real_price ~ foreign_market "
+        "log_price ~ foreign_market "
         "+ log_size "
         "+ C(artist_name) "
         "+ C(auction_house) "
-        "+ C(event_year) "
+        "+ C(sale_y) "
         "+ C(materials)"
     )
 
-    # Estimate model
+    # Use only observations with complete model variables.
+    analysis_df = pair_df.dropna(
+        subset=[
+            "log_price",
+            "foreign_market",
+            "log_size",
+            "artist_name",
+            "auction_house",
+            "sale_y",
+            "materials"
+        ]
+    ).copy()
 
+    # Exclude infinite values from continuous variables.
+    analysis_df = analysis_df[
+        np.isfinite(analysis_df["log_price"])
+        & np.isfinite(analysis_df["log_size"])
+    ].copy()
+
+    # Update regression sample counts.
+    pair_n = len(analysis_df)
+
+    home_n = int(
+        (analysis_df["foreign_market"] == 0).sum()
+    )
+
+    foreign_n = int(
+        (analysis_df["foreign_market"] == 1).sum()
+    )
+
+    common_n = analysis_df["artist_name"].nunique()
+
+    # Estimate model using the cleaned sample.
+    model = smf.ols(
+        formula=formula,
+        data=analysis_df
+    ).fit(
+        cov_type="cluster",
+        cov_kwds={
+            "groups": analysis_df["artist_name"]
+        }
+    )
+
+    # Use the regression sample for subsequent statistics.
+    pair_df = analysis_df
+
+
+    # Estimate model
+    # --------------------
     model = smf.ols(
         formula=formula,
         data=pair_df

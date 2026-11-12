@@ -6,10 +6,7 @@ from src.shared.data_preparation import prepare_dataset, create_artwork_size
 from src.home_bias.regression import create_home_bias
 from src.shared.modular_regression import run_combinations
 
-from src.home_bias.language_proximity import add_language_proximity
-from src.shared.national_pride import add_national_pride
-
-# Choose which extras to include. Edit freely.
+# Choose which extras to include
 EXTRAS_TO_USE = ["language_proximity", "national_pride"]
 
 # Every subset: baseline, each alone, both together

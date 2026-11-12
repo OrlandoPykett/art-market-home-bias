@@ -5,9 +5,11 @@ Runs the complete country-pair regression workflow.
 """
 
 import datetime
+from itertools import combinations as _combos
 
-from src.shared.data_loader import load_data, validate_columns
-from src.country_pairs.data_preparation import prepare_country_pair_data
+from src.shared.data_loader import load_and_validate_data
+from src.shared.data_preparation import prepare_dataset, create_artwork_size
+from src.shared.modular_regression import run_combinations
 from src.country_pairs.regression import run_country_pair_regressions
 from src.country_pairs.results import (
     save_results,
@@ -20,6 +22,24 @@ from src.country_pairs.config import (
     REQUIRED_COLUMNS,
     INSPECT_PAIRS
 )
+
+# Choose which extras to include
+EXTRAS_TO_USE = []
+
+# Every subset: baseline, each alone, both together
+SPECS = [
+    c for r in range(len(EXTRAS_TO_USE) + 1)
+    for c in _combos(EXTRAS_TO_USE, r)
+]
+# Or specify manually, e.g.: SPECS = [(), ("national_pride",)]
+
+
+def prepare_analysis_data():
+    df = load_and_validate_data()
+    df = prepare_dataset(df)
+    df = create_artwork_size(df)
+
+    return df
 
 
 def main():
@@ -46,14 +66,10 @@ def main():
 
     # Load data
 
-    df = load_data()
-    validate_columns(df, REQUIRED_COLUMNS)
+    df = prepare_analysis_data()
 
     print(f"\nLoaded {len(df):,} observations.")
-
-    # Prepare data
-
-    df = prepare_country_pair_data(df)
+    
 
     print(f"Usable observations: {len(df):,}")
 
