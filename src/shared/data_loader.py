@@ -9,10 +9,9 @@ validating their structure and standardising country names.
 import pandas as pd
 
 from .country_mapping import convert_country
-from src.shared.config import DATASET1_FILE, REQUIRED_COLUMNS
 
 
-def load_data():
+def load_data(DATASET_FILE):
     """
     Load the cleaned auction dataset.
 
@@ -25,7 +24,7 @@ def load_data():
     """
 
     df1 = pd.read_csv(
-        DATASET1_FILE,
+        DATASET_FILE,
         encoding="latin1",
         low_memory=False
     )
@@ -91,7 +90,7 @@ def standardise_countries(df):
     return df
 
 
-def load_and_validate_data():
+def load_and_validate_data(DATASET_FILE, REQUIRED_COLUMNS):
     """
     Load the auction dataset and perform initial validation.
 
@@ -99,7 +98,7 @@ def load_and_validate_data():
         pandas.DataFrame: Loaded and standardised dataset.
     """
 
-    df = load_data()
+    df = load_data(DATASET_FILE)
 
     validate_columns(df, REQUIRED_COLUMNS)
 

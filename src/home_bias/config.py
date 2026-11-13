@@ -7,7 +7,7 @@ Contains file paths, variable efinitions and model specifications
 # File paths
 # --------------------
 
-DATASET1_FILE = "data/cleaned/dataset1_cleaned.csv"
+DATASET_FILE = "data/cleaned/dataset1_cleaned.csv"
 DATASET2_FILE = "data/cleaned/dataset2_cleaned.csv"
 
 OUTPUT_FILE = "results/home_bias_regression.csv"

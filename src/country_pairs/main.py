@@ -19,6 +19,7 @@ from src.country_pairs.results import (
 )
 
 from src.country_pairs.config import (
+    INPUT_FILE,
     REQUIRED_COLUMNS,
     INSPECT_PAIRS
 )
@@ -35,7 +36,7 @@ SPECS = [
 
 
 def prepare_analysis_data():
-    df = load_and_validate_data()
+    df = load_and_validate_data(INPUT_FILE, REQUIRED_COLUMNS)
     df = prepare_dataset(df)
     df = create_artwork_size(df)
 

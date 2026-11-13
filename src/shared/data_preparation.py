@@ -19,7 +19,6 @@ from src.shared.config import (
     CATEGORICAL_PREDICTORS
 )
 
-
 # Filter observations
 # --------------------
 
