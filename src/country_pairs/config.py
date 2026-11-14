@@ -3,21 +3,27 @@ import os
 # File paths
 # --------------------
 
-INPUT_FILE = "data/cleaned/dataset1_cleaned.csv"
+#INPUT_FILE = "data/cleaned/dataset1_cleaned.csv"
 
-OUTPUT_FILE = "results/country_pair_regressions.csv"
-ARTIST_BREAKDOWN_FILE = "results/pair_artist_breakdown.csv"
-EXCLUSIONS_FILE = "results/country_pair_exclusions.csv"
+#OUTPUT_FILE = "results/country_pair_regressions.csv"
+#ARTIST_BREAKDOWN_FILE = "results/pair_artist_breakdown.csv"
+#EXCLUSIONS_FILE = "results/country_pair_exclusions.csv"
+
+INPUT_FILE = "data/cleaned/train_dataset.csv"
+
+OUTPUT_FILE = "results/training_regressions.csv"
+ARTIST_BREAKDOWN_FILE = "results/training_pair_artist_breakdown.csv"
+EXCLUSIONS_FILE = "results/training_country_pair_exclusions.csv"
 
 
 # Regression parameters
 # --------------------
 
-MIN_ARTIST_MARKET_OBSERVATIONS = 3
+MIN_ARTIST_MARKET_OBSERVATIONS = 5
 
-MIN_PAIR_OBSERVATIONS = 50
-MIN_HOME_OBSERVATIONS = 20
-MIN_FOREIGN_OBSERVATIONS = 20
+MIN_PAIR_OBSERVATIONS = 30
+MIN_HOME_OBSERVATIONS = 10
+MIN_FOREIGN_OBSERVATIONS = 10
 MIN_COMMON_ARTISTS = 5
 
 

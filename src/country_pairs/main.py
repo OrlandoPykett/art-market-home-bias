@@ -28,7 +28,7 @@ from src.country_pairs.config import (
 EXTRAS_TO_USE = []
 
 # Every subset: baseline, each alone, both together
-SPECS = [
+SPECS = [ 
     c for r in range(len(EXTRAS_TO_USE) + 1)
     for c in _combos(EXTRAS_TO_USE, r)
 ]
